@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 #Creating a QUEUE CLASS to access queue methods
 class Queue:
@@ -31,32 +32,16 @@ q = Queue()
 b = None
 c = None
 
-def obstacle():
+def obsornot(xcor,ycor):
     
-    if y1>=90 and y1<= 110 and x1>=40 and x1<=60  :
-        #print('Given Node is in OBSTACLE SPACE 1')
-        b = 1
-        #return b
-
-    elif (pow((y1-160),2) + pow((x1-50),2)) < 225 :
-        #print('Given Node is in OBSTACLE SPACE 2')
-        b = 2
-        #return b
+    if ycor>=90 and ycor<= 110 and xcor>=40 and xcor<=60  :
+        return 1
+    elif (pow((ycor-160),2) + pow((xcor-50),2)) < 225 :
+        return 2
+    if ycor<0 or ycor>200 or xcor<0 or xcor>100 :
+        return 3
     else:
-        b = 0
-        
-    if y2>=90 and y2<= 110 and x2>=40 and x2<=60  :
-        #print('Given Node is in OBSTACLE SPACE 1')
-        c = 1
-        #return c
-
-    elif (pow((y2-160),2) + pow((x2-50),2)) < 225 :
-        #print('Given Node is in OBSTACLE SPACE 2')
-        c = 2
-        #return c
-    else:
-        c = 0
-    return b,c
+        return 
 
 #loaded MAP
 loc = cv2.imread('ref_marker.png')
@@ -66,4 +51,24 @@ x1 = int(input("Input the x-coordinate of Start Node "))
 y1 = int(input("Input the y-coordinate of Start Node "))
 x2 = int(input("Input the x-coordinate of Goal Node "))
 y2 = int(input("Input the y-coordinate of Goal Node "))
+
+print("")
+
+if obsornot(x1,y1) == 1:
+    print('Error : Start Node is in Obstacle Space 1',)
+elif obsornot(x1,y1) == 2:
+    print('Error : Start Node is in Obstacle Space 2',)
+elif obsornot(x1,y1) == 3:
+    print('Error : Start Node is out of map boundary',)
+    
+if obsornot(x2,y2) == 1:
+    print('Error : Goal Node is in Obstacle Space 1',)
+elif obsornot(x2,y2) == 2:
+    print('Error : Goal Node is in Obstacle Space 2',)
+elif obsornot(x2,y2) == 3:
+    print('Error : Goal Node is out of map boundary',)
+
+    
+#start = np.array([x1,y1])
+#goal = np.array([x2,y2])
     
