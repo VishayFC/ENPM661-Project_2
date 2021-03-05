@@ -26,4 +26,36 @@ class Queue:
     #To see if the queue is empty    
     def is_empty(self):
         return self.items == []
+
+q = Queue()
+b = None
+c = None
+
+def obstacle():
+    
+    if y1>=90 and y1<= 110 and x1>=40 and x1<=60  :
+        #print('Given Node is in OBSTACLE SPACE 1')
+        b = 1
+        #return b
+
+    elif (pow((y1-160),2) + pow((x1-50),2)) < 225 :
+        #print('Given Node is in OBSTACLE SPACE 2')
+        b = 2
+        #return b
+    else:
+        b = 0
+        
+    if y2>=90 and y2<= 110 and x2>=40 and x2<=60  :
+        #print('Given Node is in OBSTACLE SPACE 1')
+        c = 1
+        #return c
+
+    elif (pow((y2-160),2) + pow((x2-50),2)) < 225 :
+        #print('Given Node is in OBSTACLE SPACE 2')
+        c = 2
+        #return c
+    else:
+        c = 0
+    return b,c
+
     
