@@ -1,0 +1,15 @@
+#tmap[i-1][j],tmap[i][j] = tmap[i][j],tmap[i-1][j] #UP
+                                                    
+#tmap[i-1][j+1],tmap[i][j] = tmap[i][j],tmap[i-1][j+1] #UR
+
+#tmap[i-1][j-1],tmap[i][j] = tmap[i][j],tmap[i-1][j-1]   #UL
+
+#tmap[i+1][j],tmap[i][j] = tmap[i][j],tmap[i+1][j]  #DOWN
+
+#tmap[i+1][j-1],tmap[i][j] = tmap[i][j],tmap[i+1][j-1]  #DR
+
+#tmap[i+1][j-1],tmap[i][j] = tmap[i][j],tmap[i+1][j-1]  #DL
+
+#tmap[i][j+1],tmap[i][j] = tmap[i][j],tmap[i][j+1]   #RIGHT
+
+#tmap[i][j-1],tmap[i][j] = tmap[i][j],tmap[i][j-1]   #LEFT  

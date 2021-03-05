@@ -58,4 +58,12 @@ def obstacle():
         c = 0
     return b,c
 
+#loaded MAP
+loc = cv2.imread('ref_marker.png')
+
+#Enter Valid Co-ordinates
+x1 = int(input("Input the x-coordinate of Start Node "))
+y1 = int(input("Input the y-coordinate of Start Node "))
+x2 = int(input("Input the x-coordinate of Goal Node "))
+y2 = int(input("Input the y-coordinate of Goal Node "))
     
