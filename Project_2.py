@@ -71,4 +71,40 @@ elif obsornot(x2,y2) == 3:
     
 #start = np.array([x1,y1])
 #goal = np.array([x2,y2])
+
+start = np.array([0,0])
+goal = np.array([30,30])
+
+#start = root[3][2]
+#goal = root[2][1]
+#val = loc[x1][y1]
+#print(start)
+#print(goal)
+#print(val)
+
+#start_parent = None
+
+vis = list()
+path = list()
+vis_str = list()
+
+#Adding the root to the queue
+q.enqueue(start)
+
+#Appending root to visited list
+vis.append(start)
+#vis.append((start,start_parent))
+
+def currentnode():
+
+    cn1 = q.dequeue()
+    
+    #print('Queue FULL : ',q.items)
+    
+    a = cn1[0]
+    b = cn1[1]
+    
+    #check if cn1 is in obstacle space
+    
+    return cn1,a,b
     
