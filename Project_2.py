@@ -221,3 +221,36 @@ def move(i,j,cn1):
     fchilds = visitornot(valid_childs,cn1) 
      
     return valid_childs,cn1,fchilds 
+
+def obstacle(children):
+    
+    valid_childs = list()
+    
+    for i in range(len(children)):
+        val = obsornot(children[i][0],children[i][1])
+        #print(val)
+        if val == None:
+            valid_childs.append(children[i]) 
+            #children_string.append(children[i])
+    return valid_childs  
+      
+
+def visitornot(vchilds,cn1):
+    
+    '''visitstring = list()
+    for i in range(len(vis)):
+        visitstring.append(string(vis[i]))'''
+    '''visit =[]
+    for i in range(len(vis)):
+        visit.append(vis[i][0].tolist())
+    #print('V : ',visit)
+    #visit.pop(0)
+    visitstring = list()
+    for i in range(len(visit)):
+        visitstring.append(string(visit[i]))
+        #print('visit i : ',visit[i])
+    #print(type(vis[1][0]))
+    #print('VStr : ',visitstring)'''
+    filter_child = list()
+    #check = False
+    check = 0 
