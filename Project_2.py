@@ -254,3 +254,50 @@ def visitornot(vchilds,cn1):
     filter_child = list()
     #check = False
     check = 0 
+    for j in range(len(vchilds)):
+        for i in range(len(vis)):
+            #print(visitstring[i])
+            #print('VISITED',vis[i][0])
+            #print(vchilds[j])
+            s = string(vis[i][0])
+            #print('S : ',s)
+            s1 = string(vchilds[j])
+            #print('S1 : ',s1)
+            #print(s1)
+            
+            if s == s1:
+                check = 1
+                break
+            else:
+                check = 0
+            '''if np.array_equiv(vis[i][0],vchilds[j]) == True:
+                #print('ala')
+                #check = True
+                check = 1
+                break
+            else:
+                #check = False
+                check = 0
+            #print(i)'''
+        if check == 0:#check == False:
+            vis.append((vchilds[j],cn1))
+            filter_child.append(vchilds[j])
+    #print(type(vis[1][0]))
+    #for i in range(len(vis)):
+     #   print(vis[i][0])
+    #print("filter child : ",filter_child)
+    return filter_child        
+
+
+def gsornot(parent, filtered) :
+    
+    childs = np.asarray(filtered)
+    
+    for i in range(len(filtered)):
+        if np.array_equiv(childs[i],goal) == True:
+        #if string(childs[i]) == string(goal):
+           print('Goal Reached') 
+           return childs[i],parent
+        else: 
+            q.enqueue(childs[i])
+    return  
