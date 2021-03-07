@@ -178,3 +178,46 @@ def downleft(i,j):
     cn9 = np.array([i,j])
     #print('CN2 DL',cn9)
     return cn9
+
+def move(i,j,cn1):
+    
+    children = list ()
+    #children_string = list()
+    #valid_childs = list()
+   
+    cn = upright(i,j)
+    children.append(cn)
+    cn = upleft(i,j)
+    children.append(cn)
+    cn = downright(i,j)
+    children.append(cn)
+    cn = downleft(i,j)
+    children.append(cn)
+    cn = up(i,j)
+    children.append(cn)
+    cn = down(i,j)
+    children.append(cn)
+    cn = right(i,j)
+    children.append(cn)
+    cn = left(i,j)
+    children.append(cn)
+    #print('CN1 : ',cn1)
+    #print('CHILDREN LIST : ',children)
+    #Node in Obstacle Space or not 
+         
+    #print(children) 
+    #print(valid_childs)
+    #print(children_string)
+    
+    
+    valid_childs = obstacle(children)
+    
+    #vstring = list()
+    
+    #for i in range(len(valid_childs)):
+    #    vstring.append(string(valid_childs[i]))
+    #print(vstring)
+    
+    fchilds = visitornot(valid_childs,cn1) 
+     
+    return valid_childs,cn1,fchilds 
