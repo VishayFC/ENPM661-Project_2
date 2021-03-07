@@ -107,4 +107,74 @@ def currentnode():
     #check if cn1 is in obstacle space
     
     return cn1,a,b
+
+def string(cn):
+    string=""
+    for i in range(len(cn)):
+        #for j in range(len(cn[0])):
+        string=string+" "+str(cn[i])
+    return string
+
+def up(i,j):
+    cn2 = cn1.copy()
+    i = i 
+    j = j + 1
+    cn2 = np.array([i,j])
+    #print('CN2 UP',cn2)
+    return cn2
+   
+def down(i,j):
+    cn3 = cn1.copy()
+    i = i 
+    j = j - 1
+    cn3 = np.array([i,j])
+    #print('CN2 DOWN',cn3)
+    return cn3
+
+def right(i,j):
+    cn4 = cn1.copy()
+    i = i + 1
+    j = j 
+    cn4 = np.array([i,j])
+    #print('CN2 RIGHT',cn4)
+    return cn4
+   
+def left(i,j):
+    cn5 = cn1.copy()
+    i = i - 1
+    j = j 
+    cn5 = np.array([i,j])
+    #print('CN2 LEFT',cn5)
+    return cn5
+
+def upright(i,j):
+    cn6 = cn1.copy()
+    i = i + 1
+    j = j + 1
+    cn6 = np.array([i,j])
+    #print('CN2 UR',cn6)
+    return cn6
     
+def upleft(i,j):
+    cn7 = cn1.copy()
+    i = i - 1
+    j = j + 1
+    cn7 = np.array([i,j])
+    #print('CN2 UL',cn7)
+    return cn7
+  
+def downright(i,j):
+    cn8 = cn1.copy()
+    i = i + 1
+    j = j - 1
+    cn8 = np.array([i,j])
+    #print('CN2 DR',cn8)
+    return cn8
+     
+def downleft(i,j):
+    cn9 = cn1.copy()
+    i = i - 1
+    j = j - 1
+    cn9 = np.array([i,j])
+    #print('CN2 DL',cn9)
+    return cn9
