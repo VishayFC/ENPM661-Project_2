@@ -319,3 +319,9 @@ def gsornot(parent, filtered) :
         else: 
             q.enqueue(childs[i])
     return  
+
+'''cn1,i,j = currentnode()
+    
+lis, parent, flist = move(i,j,cn1)
+
+y = gsornot(parent, flist)'''
