@@ -78,53 +78,66 @@ y2 = int(input("Input the y-coordinate of Goal Node "))
 
 print("")
 
+#Checking if the points are in any obstacle space and giving the approprite error message
+if obsornot(x1,y1) == 1:
+    print('Error : Start Node is in the Slanted Rectangle',)
+elif obsornot(x1,y1) == 2:
+    print('Error : Start Node is in the Circle',)
+elif obsornot(x1,y1) == 3:
+    print('Error : Start Node is out of map boundary',)
+elif obsornot(x1,y1) == 4:
+    print('Error : Start Node is in the C-Shape',)
+elif obsornot(x1,y1) == 5:
+    print('Error : Start Node is in the Elipse',)
+elif obsornot(x1,y1) == 6 or obsornot(x1,y1) == 7 or obsornot(x1,y1) == 8:
+    print('Error : Start Node is in the Polygon',)
     
-#start = np.array([x1,y1])
-#goal = np.array([x2,y2])
+if obsornot(x2,y2) == 1:
+    print('Error : Goal Node is in the Slanted Rectangle',)
+elif obsornot(x2,y2) == 2:
+    print('Error : Goal Node is in the Circle',)
+elif obsornot(x2,y2) == 3:
+    print('Error : Goal Node is out of map boundary',)
+elif obsornot(x2,y2) == 4:
+    print('Error : Goal Node is in the C-Shape',)
+elif obsornot(x2,y2) == 5:
+    print('Error : Goal Node is in the Elipse',)
+elif obsornot(x2,y2) == 6 or obsornot(x2,y2) == 7 or obsornot(x2,y2) == 8:
+    print('Error : Goal Node is in the Polygon',)
 
-start = np.array([0,0])
-goal = np.array([30,30])
+#Entering the input points in a start and goal array     
+start = np.array([x1,y1])
+goal = np.array([x2,y2])
 
-#start = root[3][2]
-#goal = root[2][1]
-#val = loc[x1][y1]
-#print(start)
-#print(goal)
-#print(val)
-
-#start_parent = None
+start_parent = None
 
 vis = list()
 path = list()
-vis_str = list()
 
 #Adding the root to the queue
 q.enqueue(start)
 
-#Appending root to visited list
-vis.append(start)
-#vis.append((start,start_parent))
+#Appending root and its parent to visited list
+vis.append((start,start_parent))
 
+#Updating the parent node by dequeueing the previous parent after it has produced all its children
 def currentnode():
 
     cn1 = q.dequeue()
     
-    #print('Queue FULL : ',q.items)
-    
     a = cn1[0]
     b = cn1[1]
     
-    #check if cn1 is in obstacle space
-    
     return cn1,a,b
 
+#String functions to convert the array elements into strings
 def string(cn):
     string=""
     for i in range(len(cn)):
-        #for j in range(len(cn[0])):
         string=string+" "+str(cn[i])
     return string
 
+#All 8 possible move functions
 def up(i,j):
     cn2 = cn1.copy()
     i = i 
@@ -189,11 +202,14 @@ def downleft(i,j):
     #print('CN2 DL',cn9)
     return cn9
 
+
+#This function calls the appropriate move functions and calls functions to check if they --
+# are in obstacle space and in the visited list 
+
+#The function returns the child nodes created of the current parent, the parent itself and the valid chidren 
 def move(i,j,cn1):
     
     children = list ()
-    #children_string = list()
-    #valid_childs = list()
    
     cn = upright(i,j)
     children.append(cn)
@@ -211,113 +227,57 @@ def move(i,j,cn1):
     children.append(cn)
     cn = left(i,j)
     children.append(cn)
-    #print('CN1 : ',cn1)
-    #print('CHILDREN LIST : ',children)
-    #Node in Obstacle Space or not 
-         
-    #print(children) 
-    #print(valid_childs)
-    #print(children_string)
-    
     
     valid_childs = obstacle(children)
-    
-    #vstring = list()
-    
-    #for i in range(len(valid_childs)):
-    #    vstring.append(string(valid_childs[i]))
-    #print(vstring)
     
     fchilds = visitornot(valid_childs,cn1) 
      
     return valid_childs,cn1,fchilds 
 
+
+#Checking if the co-ordinates of the points passed are in any obstacle space
 def obstacle(children):
     
     valid_childs = list()
     
     for i in range(len(children)):
         val = obsornot(children[i][0],children[i][1])
-        #print(val)
         if val == None:
-            valid_childs.append(children[i]) 
-            #children_string.append(children[i])
+            valid_childs.append(children[i])
     return valid_childs  
       
-
+#The list of valid children is passed to this functions which returns if --
+# they are in the visited list or not by comparing them with the elements in the list
 def visitornot(vchilds,cn1):
-    
-    '''visitstring = list()
-    for i in range(len(vis)):
-        visitstring.append(string(vis[i]))'''
-    '''visit =[]
-    for i in range(len(vis)):
-        visit.append(vis[i][0].tolist())
-    #print('V : ',visit)
-    #visit.pop(0)
-    visitstring = list()
-    for i in range(len(visit)):
-        visitstring.append(string(visit[i]))
-        #print('visit i : ',visit[i])
-    #print(type(vis[1][0]))
-    #print('VStr : ',visitstring)'''
+
     filter_child = list()
-    #check = False
     check = 0 
     for j in range(len(vchilds)):
         for i in range(len(vis)):
-            #print(visitstring[i])
-            #print('VISITED',vis[i][0])
-            #print(vchilds[j])
-            s = string(vis[i][0])
-            #print('S : ',s)
-            s1 = string(vchilds[j])
-            #print('S1 : ',s1)
-            #print(s1)
-            
-            if s == s1:
+            if string(vis[i][0]) == string(vchilds[j]):
                 check = 1
                 break
             else:
                 check = 0
-            '''if np.array_equiv(vis[i][0],vchilds[j]) == True:
-                #print('ala')
-                #check = True
-                check = 1
-                break
-            else:
-                #check = False
-                check = 0
-            #print(i)'''
-        if check == 0:#check == False:
+        if check == 0:
             vis.append((vchilds[j],cn1))
             filter_child.append(vchilds[j])
-    #print(type(vis[1][0]))
-    #for i in range(len(vis)):
-     #   print(vis[i][0])
-    #print("filter child : ",filter_child)
     return filter_child        
 
-
+#Comparing the filtered children with goal node 
 def gsornot(parent, filtered) :
     
     childs = np.asarray(filtered)
     
     for i in range(len(filtered)):
         if np.array_equiv(childs[i],goal) == True:
-        #if string(childs[i]) == string(goal):
            print('Goal Reached') 
            return childs[i],parent
         else: 
             q.enqueue(childs[i])
-    return  
+    return 
 
-'''cn1,i,j = currentnode()
-    
-lis, parent, flist = move(i,j,cn1)
-
-y = gsornot(parent, flist)'''
-
+#Running the loop till the goal node is reached
 y = None
 
 while y is None :
@@ -327,29 +287,14 @@ while y is None :
     lis, parent, flist = move(i,j,cn1)
     
     y = gsornot(parent, flist)
-    #print("len queue: ",q.items)
-    #print("len vis: ",len(vis))
-
-
-#print('Lis : ',lis)
-#print('CN1 : ',parent)
-#print('Children string : ',liss)
-
-#print('Queue FULL : ',q.items)
-
-print('GOAL PARENT : ',y[1])    
-
-print('VISITED LIST : ',len(vis))
-#print('VISITED LIST : ',vis)
 
 child=y[0]
 
-#Tracking back from Goal State to the first child
+#Tracking back from goal node to the first child
 while np.array_equiv(parent,start) ==  False:
     
     for i in range(len(vis)):
-        
-        #if np.array_equiv(child,vis[i][0]) == True: 
+         
         if string(child) == string(vis[i][0]):
             parent = vis[i][1] 
             child  = vis[i][1]                           
@@ -358,13 +303,16 @@ while np.array_equiv(parent,start) ==  False:
 
 #Appending the root node and reversing to get the path             
 path.append(start)
+#path.reverse()
 
+out = cv2.VideoWriter('Project_2_Vid.avi',cv2.VideoWriter_fourcc(*'XVID'), 30, (400,300))
+         
+#Visualization
 vislist =[]
 for i in range(len(vis)):
     vislist.append(vis[i][0].tolist())
 vislist.pop(0)
 one = list()
-#print("vislist ",vislist[1])
 
 for i in range(300):
     for j in range(400):
@@ -372,25 +320,21 @@ for i in range(300):
 
 for i in range(len(vis)-6):
     one = one + [vislist[i]]
-    #print(one)
     for j in one:
-        loc[299 - j[1]][j[0]][0] = 255
+        loc[299 - j[1]][j[0]][0] = 0
         loc[299 - j[1]][j[0]][1] = 255
-        loc[299 - j[1]][j[0]][2] = 0
+        loc[299 - j[1]][j[0]][2] = 255
     
     loc = loc.astype(np.uint8)
     cv2.imshow("Loc",loc)
-    #cv2.imshow('1',loc)
-    out.write(loc)
     cv2.waitKey(1)
     
-    
+#Path Visualization    
 for i in range(len(path)):
-    loc[299 - path[i][1]][path[i][0]][:] = (0,0,255)
-
+    loc[299 - path[i][1]][path[i][0]][:] = (255,0,0)
+    out.write(loc)
     cv2.imshow('Loc',loc)
     cv2.waitKey(1)
-#print(loc) 
-   
+  
 cv2.waitKey(0)    
-cv2.destroyAllWindows() 
+cv2.destroyAllWindows()     
