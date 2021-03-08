@@ -33,7 +33,7 @@ q = Queue()
 
 def obsornot(xcor,ycor):
     
-    if ((ycor) + (1.42814 * xcor) >= 176.5511) and ((ycor) - (0.7 * xcor) >= 74.39) and ((ycor) + (1.42814 * xcor) <= 428.06815) and ((ycor) - (0.7 * xcor) <= 98.80545):
+    if ((ycor) + (1.42814 * xcor) >= 176.55) and ((ycor) - (0.7 * xcor) >= 74.39) and ((ycor) + (1.428 * xcor) <= 428.068) and ((ycor) - (0.7 * xcor) <= 98.805):
         loc[299 - ycor][xcor][:] = 0
         #print('Slant Rectangle')
         return 1
@@ -41,7 +41,7 @@ def obsornot(xcor,ycor):
         loc[299 - ycor][xcor][:] = 0
         #print('Circle')
         return 2
-    if xcor<0 or xcor>400 or ycor<0 or ycor>300 :
+    if xcor<0 or xcor>=400 or ycor<0 or ycor>=300 :
         #print('Out of Map')
         return 3
     elif (xcor>=200 and xcor<= 210 and ycor<=280 and ycor>=230) or (xcor>=200 and xcor<=230 and ycor<=280 and ycor>=270) or (xcor>=200 and xcor<=230 and ycor<=240 and ycor>=230):
@@ -305,7 +305,7 @@ while np.array_equiv(parent,start) ==  False:
 path.append(start)
 #path.reverse()
 
-out = cv2.VideoWriter('Project_2_Vid.avi',cv2.VideoWriter_fourcc(*'XVID'), 30, (400,300))
+out = cv2.VideoWriter('P.avi',cv2.VideoWriter_fourcc(*'XVID'), 30, (400,300))
          
 #Visualization
 vislist =[]
@@ -327,13 +327,14 @@ for i in range(len(vis)-6):
     
     loc = loc.astype(np.uint8)
     cv2.imshow("Loc",loc)
+    out.write(loc)
     cv2.waitKey(1)
     
 #Path Visualization    
 for i in range(len(path)):
     loc[299 - path[i][1]][path[i][0]][:] = (255,0,0)
-    out.write(loc)
     cv2.imshow('Loc',loc)
+    out.write(loc)
     cv2.waitKey(1)
   
 cv2.waitKey(0)    
