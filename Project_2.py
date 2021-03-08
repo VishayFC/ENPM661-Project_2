@@ -349,3 +349,20 @@ print('GOAL PARENT : ',y[1])
 
 print('VISITED LIST : ',len(vis))
 #print('VISITED LIST : ',vis)
+
+child=y[0]
+
+#Tracking back from Goal State to the first child
+while np.array_equiv(parent,start) ==  False:
+    
+    for i in range(len(vis)):
+        
+        #if np.array_equiv(child,vis[i][0]) == True: 
+        if string(child) == string(vis[i][0]):
+            parent = vis[i][1] 
+            child  = vis[i][1]                           
+            path.append(vis[i][0])
+            break
+
+#Appending the root node and reversing to get the path             
+path.append(start)
