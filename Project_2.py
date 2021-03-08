@@ -27,42 +27,48 @@ class Queue:
     #To see if the queue is empty    
     def is_empty(self):
         return self.items == []
-
+    
 q = Queue()
-b = None
-c = None
+
 
 def obsornot(xcor,ycor):
     
     if ((ycor) + (1.42814 * xcor) >= 176.5511) and ((ycor) - (0.7 * xcor) >= 74.39) and ((ycor) + (1.42814 * xcor) <= 428.06815) and ((ycor) - (0.7 * xcor) <= 98.80545):
-        #print('Slant Rect')
+        loc[299 - ycor][xcor][:] = 0
+        #print('Slant Rectangle')
         return 1
     elif (pow((xcor-90),2) + pow((ycor-70),2)) < 1225 :
-        #print("Circle")
+        loc[299 - ycor][xcor][:] = 0
+        #print('Circle')
         return 2
     if xcor<0 or xcor>400 or ycor<0 or ycor>300 :
-        #print("Out of Map")
+        #print('Out of Map')
         return 3
     elif (xcor>=200 and xcor<= 210 and ycor<=280 and ycor>=230) or (xcor>=200 and xcor<=230 and ycor<=280 and ycor>=270) or (xcor>=200 and xcor<=230 and ycor<=240 and ycor>=230):
+        loc[299 - ycor][xcor][:] = 0
         #print('C-Shape')
         return 4
     elif (((xcor - 246) / 60) ** 2) + (((ycor - 145) / 30) ** 2) <= 1:
+        loc[299 - ycor][xcor][:] = 0
         #print('Elipse')
         return 5
     elif(ycor + xcor >= 391) and (xcor - ycor <= 265) and (ycor + 0.49646 * xcor <= 305.20202) and (0.89003 * xcor - ycor >= 148.7438):
+        loc[299 - ycor][xcor][:] = 0
         #print('Polygon_1')
         return 6
     elif(ycor + 0.49646*xcor >= 305.20202) and (ycor + 0.81259*xcor <= 425.66019) and (ycor + 0.17512 * xcor <= 199.99422):
+        loc[299 - ycor][xcor][:] = 0
         #print('Polygon_2')
         return 7
     elif(ycor + 13.49145*xcor <= 5256.7216) and (1.43169*xcor - ycor >= 368.82072) and (ycor + 0.81259*xcor >= 425.66019):
+        loc[299 - ycor][xcor][:] = 0
         #print('Polygon_3')
         return 8
     else:
         return None
 
 #loaded MAP
-loc = cv2.imread('ref_marker.png')
+loc =  255 * np.ones((300,400,3))
 
 #Enter Valid Co-ordinates
 x1 = int(input("Input the x-coordinate of Start Node "))
@@ -71,20 +77,6 @@ x2 = int(input("Input the x-coordinate of Goal Node "))
 y2 = int(input("Input the y-coordinate of Goal Node "))
 
 print("")
-
-if obsornot(x1,y1) == 1:
-    print('Error : Start Node is in Obstacle Space 1',)
-elif obsornot(x1,y1) == 2:
-    print('Error : Start Node is in Obstacle Space 2',)
-elif obsornot(x1,y1) == 3:
-    print('Error : Start Node is out of map boundary',)
-    
-if obsornot(x2,y2) == 1:
-    print('Error : Goal Node is in Obstacle Space 1',)
-elif obsornot(x2,y2) == 2:
-    print('Error : Goal Node is in Obstacle Space 2',)
-elif obsornot(x2,y2) == 3:
-    print('Error : Goal Node is out of map boundary',)
 
     
 #start = np.array([x1,y1])
