@@ -325,3 +325,27 @@ def gsornot(parent, filtered) :
 lis, parent, flist = move(i,j,cn1)
 
 y = gsornot(parent, flist)'''
+
+y = None
+
+while y is None :
+    
+    cn1,i,j = currentnode()
+    
+    lis, parent, flist = move(i,j,cn1)
+    
+    y = gsornot(parent, flist)
+    #print("len queue: ",q.items)
+    #print("len vis: ",len(vis))
+
+
+#print('Lis : ',lis)
+#print('CN1 : ',parent)
+#print('Children string : ',liss)
+
+#print('Queue FULL : ',q.items)
+
+print('GOAL PARENT : ',y[1])    
+
+print('VISITED LIST : ',len(vis))
+#print('VISITED LIST : ',vis)
