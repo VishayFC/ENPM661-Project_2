@@ -366,3 +366,28 @@ while np.array_equiv(parent,start) ==  False:
 
 #Appending the root node and reversing to get the path             
 path.append(start)
+
+vislist =[]
+for i in range(len(vis)):
+    vislist.append(vis[i][0].tolist())
+vislist.pop(0)
+one = list()
+#print("vislist ",vislist[1])
+
+for i in range(300):
+    for j in range(400):
+        obsornot(j,i)
+
+for i in range(len(vis)-6):
+    one = one + [vislist[i]]
+    #print(one)
+    for j in one:
+        loc[299 - j[1]][j[0]][0] = 255
+        loc[299 - j[1]][j[0]][1] = 255
+        loc[299 - j[1]][j[0]][2] = 0
+    
+    loc = loc.astype(np.uint8)
+    cv2.imshow("Loc",loc)
+    #cv2.imshow('1',loc)
+    out.write(loc)
+    cv2.waitKey(1)
