@@ -391,3 +391,14 @@ for i in range(len(vis)-6):
     #cv2.imshow('1',loc)
     out.write(loc)
     cv2.waitKey(1)
+    
+    
+for i in range(len(path)):
+    loc[299 - path[i][1]][path[i][0]][:] = (0,0,255)
+
+    cv2.imshow('Loc',loc)
+    cv2.waitKey(1)
+#print(loc) 
+   
+cv2.waitKey(0)    
+cv2.destroyAllWindows() 
