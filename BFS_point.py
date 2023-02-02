@@ -1,13 +1,48 @@
 import numpy as np
 import cv2
+import sys
 
 #Creating a QUEUE CLASS to access queue methods
 class Queue:
     
     def __init__(self):
         self.items = []
-    #To insert an element at the back of the queue 
-    
+        # print("Inside Q - 1")
+        # self.is_empty()
+        #loaded MAP
+        self.loc =  255 * np.ones((300,400,3))
+
+        #Enter Valid Co-ordinates
+        self.x1 = int(input("Input the x-coordinate of Start Node "))
+        self.y1 = int(input("Input the y-coordinate of Start Node "))
+        self.x2 = int(input("Input the x-coordinate of Goal Node "))
+        self.y2 = int(input("Input the y-coordinate of Goal Node "))
+
+        #Entering the input points in a start and goal array     
+        self.start = np.array([self.x1, self.y1])
+        self.goal = np.array([self.x2, self.y2])
+
+        #Checking if the points are in any obstacle space and giving the approprite error message
+        if self.obsornot(self.x1,self.y1) == 1 or self.obsornot(self.x2,self.y2) == 1:
+            print('Error : Start or Goal Node is in the Slanted Rectangle',)
+            sys.exit()
+        elif self.obsornot(self.x1,self.y1) == 2 or self.obsornot(self.x2,self.y2) == 2:
+            print('Error : Start or Goal Node is in the Circle',)
+            sys.exit()
+        elif self.obsornot(self.x1,self.y1) == 3 or self.obsornot(self.x2,self.y2) == 3:
+            print('Error : Start or Goal Node is out of map boundary',)
+            sys.exit()
+        elif self.obsornot(self.x1,self.y1) == 4 or self.obsornot(self.x2,self.y2) == 4:
+            print('Error : Start or Goal Node is in the C-Shape',)
+            sys.exit()
+        elif self.obsornot(self.x1,self.y1) == 5 or self.obsornot(self.x2,self.y2) == 5:
+            print('Error : Start or Goal Node is in the Elipse',)
+            sys.exit()
+        elif self.obsornot(self.x1,self.y1) == 6 or self.obsornot(self.x1,self.y1) == 7 or self.obsornot(self.x1,self.y1) == 8 or self.obsornot(self.x2,self.y2) == 6 or self.obsornot(self.x2,self.y2) == 7 or self.obsornot(self.x2,self.y2) == 8:
+            print('Error : Start or Goal Node is in the Polygon',)
+            sys.exit()
+
+    #To insert an element at the back of the queue
     def enqueue(self, item):
         self.items.insert(0 , item)
         
@@ -24,111 +59,57 @@ class Queue:
     #To get the length of the queue
     def size(self):
         return len(self.items)
+
     #To see if the queue is empty    
     def is_empty(self):
+        print("Empty Queue...")
         return self.items == []
+
+    #Updating the parent node by dequeueing the previous parent after it has produced all its children
+    def currentnode(self):
+        cn1 = q.dequeue()        
+        return cn1
     
-q = Queue()
-
-
-def obsornot(xcor,ycor):
+    #Checks if (X,Y) is in Obstacle space or not
+    def obsornot(self,xcor,ycor):
     
-    if ((ycor) + (1.42814 * xcor) >= 176.55) and ((ycor) - (0.7 * xcor) >= 74.39) and ((ycor) + (1.428 * xcor) <= 428.068) and ((ycor) - (0.7 * xcor) <= 98.805):
-        loc[299 - ycor][xcor][:] = 0
-        #print('Slant Rectangle')
-        return 1
-    elif (pow((xcor-90),2) + pow((ycor-70),2)) < 1225 :
-        loc[299 - ycor][xcor][:] = 0
-        #print('Circle')
-        return 2
-    if xcor<0 or xcor>=400 or ycor<0 or ycor>=300 :
-        #print('Out of Map')
-        return 3
-    elif (xcor>=200 and xcor<= 210 and ycor<=280 and ycor>=230) or (xcor>=200 and xcor<=230 and ycor<=280 and ycor>=270) or (xcor>=200 and xcor<=230 and ycor<=240 and ycor>=230):
-        loc[299 - ycor][xcor][:] = 0
-        #print('C-Shape')
-        return 4
-    elif (((xcor - 246) / 60) ** 2) + (((ycor - 145) / 30) ** 2) <= 1:
-        loc[299 - ycor][xcor][:] = 0
-        #print('Elipse')
-        return 5
-    elif(ycor + xcor >= 391) and (xcor - ycor <= 265) and (ycor + 0.49646 * xcor <= 305.20202) and (0.89003 * xcor - ycor >= 148.7438):
-        loc[299 - ycor][xcor][:] = 0
-        #print('Polygon_1')
-        return 6
-    elif(ycor + 0.49646*xcor >= 305.20202) and (ycor + 0.81259*xcor <= 425.66019) and (ycor + 0.17512 * xcor <= 199.99422):
-        loc[299 - ycor][xcor][:] = 0
-        #print('Polygon_2')
-        return 7
-    elif(ycor + 13.49145*xcor <= 5256.7216) and (1.43169*xcor - ycor >= 368.82072) and (ycor + 0.81259*xcor >= 425.66019):
-        loc[299 - ycor][xcor][:] = 0
-        #print('Polygon_3')
-        return 8
-    else:
-        return None
+        if ((ycor) + (1.42814 * xcor) >= 176.55) and ((ycor) - (0.7 * xcor) >= 74.39) and ((ycor) + (1.428 * xcor) <= 428.068) and ((ycor) - (0.7 * xcor) <= 98.805):
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('Slant Rectangle')
+            return 1
+        elif (pow((xcor-90),2) + pow((ycor-70),2)) < 1225 :
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('Circle')
+            return 2
+        if xcor<0 or xcor>=400 or ycor<0 or ycor>=300 :
+            #print('Out of Map')
+            return 3
+        elif (xcor>=200 and xcor<= 210 and ycor<=280 and ycor>=230) or (xcor>=200 and xcor<=230 and ycor<=280 and ycor>=270) or (xcor>=200 and xcor<=230 and ycor<=240 and ycor>=230):
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('C-Shape')
+            return 4
+        elif (((xcor - 246) / 60) ** 2) + (((ycor - 145) / 30) ** 2) <= 1:
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('Elipse')
+            return 5
+        elif(ycor + xcor >= 391) and (xcor - ycor <= 265) and (ycor + 0.49646 * xcor <= 305.20202) and (0.89003 * xcor - ycor >= 148.7438):
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('Polygon_1')
+            return 6
+        elif(ycor + 0.49646*xcor >= 305.20202) and (ycor + 0.81259*xcor <= 425.66019) and (ycor + 0.17512 * xcor <= 199.99422):
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('Polygon_2')
+            return 7
+        elif(ycor + 13.49145*xcor <= 5256.7216) and (1.43169*xcor - ycor >= 368.82072) and (ycor + 0.81259*xcor >= 425.66019):
+            self.loc[299 - ycor][xcor][:] = 0
+            #print('Polygon_3')
+            return 8
+        else:
+            return None
 
-#loaded MAP
-loc =  255 * np.ones((300,400,3))
+############################################################## END QUEUE CLASS ##############################################################
 
-#Enter Valid Co-ordinates
-x1 = int(input("Input the x-coordinate of Start Node "))
-y1 = int(input("Input the y-coordinate of Start Node "))
-x2 = int(input("Input the x-coordinate of Goal Node "))
-y2 = int(input("Input the y-coordinate of Goal Node "))
 
-print("")
-
-#Checking if the points are in any obstacle space and giving the approprite error message
-if obsornot(x1,y1) == 1:
-    print('Error : Start Node is in the Slanted Rectangle',)
-elif obsornot(x1,y1) == 2:
-    print('Error : Start Node is in the Circle',)
-elif obsornot(x1,y1) == 3:
-    print('Error : Start Node is out of map boundary',)
-elif obsornot(x1,y1) == 4:
-    print('Error : Start Node is in the C-Shape',)
-elif obsornot(x1,y1) == 5:
-    print('Error : Start Node is in the Elipse',)
-elif obsornot(x1,y1) == 6 or obsornot(x1,y1) == 7 or obsornot(x1,y1) == 8:
-    print('Error : Start Node is in the Polygon',)
-    
-if obsornot(x2,y2) == 1:
-    print('Error : Goal Node is in the Slanted Rectangle',)
-elif obsornot(x2,y2) == 2:
-    print('Error : Goal Node is in the Circle',)
-elif obsornot(x2,y2) == 3:
-    print('Error : Goal Node is out of map boundary',)
-elif obsornot(x2,y2) == 4:
-    print('Error : Goal Node is in the C-Shape',)
-elif obsornot(x2,y2) == 5:
-    print('Error : Goal Node is in the Elipse',)
-elif obsornot(x2,y2) == 6 or obsornot(x2,y2) == 7 or obsornot(x2,y2) == 8:
-    print('Error : Goal Node is in the Polygon',)
-
-#Entering the input points in a start and goal array     
-start = np.array([x1,y1])
-goal = np.array([x2,y2])
-
-start_parent = None
-
-vis = list()
-path = list()
-
-#Adding the root to the queue
-q.enqueue(start)
-
-#Appending root and its parent to visited list
-vis.append((start,start_parent))
-
-#Updating the parent node by dequeueing the previous parent after it has produced all its children
-def currentnode():
-
-    cn1 = q.dequeue()
-    
-    a = cn1[0]
-    b = cn1[1]
-    
-    return cn1,a,b
 
 #String functions to convert the array elements into strings
 def string(cn):
@@ -206,10 +187,12 @@ def downleft(i,j):
 #This function calls the appropriate move functions and calls functions to check if they --
 # are in obstacle space and in the visited list 
 
-#The function returns the child nodes created of the current parent, the parent itself and the valid chidren 
-def move(i,j,cn1):
+#The function returns the child nodes created of the current parent, the parent itself and the valid children 
+def move(cn1):
     
-    children = list ()
+    children = []
+    i = cn1[0]
+    j = cn1[1]
    
     cn = upright(i,j)
     children.append(cn)
@@ -239,19 +222,20 @@ def move(i,j,cn1):
 def obstacle(children):
     
     valid_childs = list()
-    
+    # Can be made efficient??
     for i in range(len(children)):
-        val = obsornot(children[i][0],children[i][1])
+        val = q.obsornot(children[i][0],children[i][1])
         if val == None:
             valid_childs.append(children[i])
     return valid_childs  
       
-#The list of valid children is passed to this functions which returns if --
+#The list of valid children is passed to this function which returns if --
 # they are in the visited list or not by comparing them with the elements in the list
 def visitornot(vchilds,cn1):
 
     filter_child = list()
-    check = 0 
+    check = 0
+    # Could be made efficient
     for j in range(len(vchilds)):
         for i in range(len(vis)):
             if string(vis[i][0]) == string(vchilds[j]):
@@ -270,72 +254,104 @@ def gsornot(parent, filtered) :
     childs = np.asarray(filtered)
     
     for i in range(len(filtered)):
-        if np.array_equiv(childs[i],goal) == True:
+        if np.array_equiv(childs[i],q.goal) == True:
            print('Goal Reached') 
            return childs[i],parent
         else: 
             q.enqueue(childs[i])
     return 
 
-#Running the loop till the goal node is reached
-y = None
+#Create path with the help of visited nodes
+def createPath(parent, child, vis):
+    #Tracking back from goal node to the first child
+    while np.array_equiv(parent,q.start) ==  False:
+        
+        for i in range(len(vis)):
+            
+            if string(child) == string(vis[i][0]):
+                parent = vis[i][1] 
+                child  = vis[i][1]                           
+                path.append(vis[i][0])
+                break
+    return path
 
-while y is None :
-    
-    cn1,i,j = currentnode()
-    
-    lis, parent, flist = move(i,j,cn1)
-    
-    y = gsornot(parent, flist)
+#Opencv grid visualization
+def visualization(vis, path):
 
-child=y[0]
+    out = cv2.VideoWriter('P.avi',cv2.VideoWriter_fourcc(*'XVID'), 30, (400,300))
 
-#Tracking back from goal node to the first child
-while np.array_equiv(parent,start) ==  False:
-    
+    #Visualization
+    vislist =[]
     for i in range(len(vis)):
-         
-        if string(child) == string(vis[i][0]):
-            parent = vis[i][1] 
-            child  = vis[i][1]                           
-            path.append(vis[i][0])
-            break
+        vislist.append(vis[i][0].tolist())
+    vislist.pop(0)
+    one = []
 
-#Appending the root node and reversing to get the path             
-path.append(start)
-#path.reverse()
+    #opencv x,y->y,x
+    for i in range(300):
+        for j in range(400):
+            q.obsornot(j,i)
 
-out = cv2.VideoWriter('P.avi',cv2.VideoWriter_fourcc(*'XVID'), 30, (400,300))
-         
-#Visualization
-vislist =[]
-for i in range(len(vis)):
-    vislist.append(vis[i][0].tolist())
-vislist.pop(0)
-one = list()
-
-for i in range(300):
-    for j in range(400):
-        obsornot(j,i)
-
-for i in range(len(vis)-6):
-    one = one + [vislist[i]]
-    for j in one:
-        loc[299 - j[1]][j[0]][0] = 0
-        loc[299 - j[1]][j[0]][1] = 255
-        loc[299 - j[1]][j[0]][2] = 255
+    for i in range(len(vis)-6):
+        one = one + [vislist[i]]
+        for j in one:
+            q.loc[299 - j[1]][j[0]][0] = 0
+            q.loc[299 - j[1]][j[0]][1] = 255
+            q.loc[299 - j[1]][j[0]][2] = 255
+        
+        loc = q.loc.astype(np.uint8)
+        cv2.imshow("Loc",loc)
+        out.write(loc)
+        cv2.waitKey(1)
+        
+    #Path Visualization    
+    for i in range(len(path)):
+        loc[299 - path[i][1]][path[i][0]][:] = (255,0,0)
+        cv2.imshow('Loc',loc)
+        out.write(loc)
+        cv2.waitKey(1)
     
-    loc = loc.astype(np.uint8)
-    cv2.imshow("Loc",loc)
-    out.write(loc)
-    cv2.waitKey(1)
-    
-#Path Visualization    
-for i in range(len(path)):
-    loc[299 - path[i][1]][path[i][0]][:] = (255,0,0)
-    cv2.imshow('Loc',loc)
-    out.write(loc)
-    cv2.waitKey(1)
-  
-cv2.waitKey(0)    
-cv2.destroyAllWindows()     
+    cv2.waitKey(0)    
+    cv2.destroyAllWindows()
+
+
+
+if __name__ == '__main__':
+
+    # print("Outside Q - 1")    
+    q = Queue()
+    # print("Outside Q - 2")
+
+    start_parent = None
+
+    vis = list()
+    path = list()
+
+    #Adding the root to the queue
+    q.enqueue(q.start)
+
+    #Appending root and its parent to visited list
+    vis.append((q.start,start_parent))
+
+    #Running the loop till the goal node is reached
+    y = None
+
+    while y is None :
+        
+        cn1 = q.currentnode()
+        
+        lis, parent, flist = move(cn1)
+        
+        y = gsornot(parent, flist)
+
+    child = y[0]
+
+    path = createPath(parent, child, vis)
+
+    #Appending the root node and reversing to get the path             
+    path.append(q.start)
+    #path.reverse()
+
+    visualization(vis, path)
+            
+         
